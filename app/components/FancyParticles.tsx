@@ -1,12 +1,12 @@
-// app/components/ParticleOrbit.tsx
+// app/components/FancyParticles.tsx
 "use client";
 
 import React from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
 
 type Props = {
-  /** Canvas box size in px (square). If omitted, it will stretch to parent width with a smart height. */
+  /** Canvas box size in px (square). If omitted, it stretches to parent width with a smart height. */
   size?: number;
   /** Approx number of particles */
   particles?: number;
@@ -29,7 +29,7 @@ type P = {
   oS: number; // orbit speed
 };
 
-export default function ParticleOrbit({
+export default function FancyParticles({
   size = 320,
   particles = 160,
   className,
@@ -43,10 +43,17 @@ export default function ParticleOrbit({
 
   // Scroll-driven niceties
   const { scrollYProgress } = useScroll();
-  const lineAlpha = useTransform(scrollYProgress, [0, 1], [0.6, 0.2]); // lines fade slightly on scroll
-  const driftBoost = useTransform(scrollYProgress, [0, 1], [1, 1.6]);   // particles drift a bit more as you scroll
+  const lineAlphaMV = useTransform(scrollYProgress, [0, 1], [0.6, 0.2]); // lines fade slightly on scroll
+  const driftBoostMV = useTransform(scrollYProgress, [0, 1], [1, 1.6]); // particles drift a bit more as you scroll
   const logoScale = useTransform(scrollYProgress, [0, 1], [1.0, 1.06]); // logo breathes
   const logoGlowOpacity = useTransform(scrollYProgress, [0, 1], [0.25, 0.4]);
+
+  // Keep the latest numbers in refs for the canvas loop (MotionValues live outside React render)
+  const lineAlphaRef = React.useRef<number>(0.6);
+  const driftBoostRef = React.useRef<number>(1);
+
+  useMotionValueEvent(lineAlphaMV, "change", (v) => (lineAlphaRef.current = v));
+  useMotionValueEvent(driftBoostMV, "change", (v) => (driftBoostRef.current = v));
 
   React.useEffect(() => {
     const canvas = canvasRef.current!;
@@ -130,7 +137,7 @@ export default function ParticleOrbit({
         const p = ps[i];
 
         // drift (amplified slightly by scroll)
-        const boost = (getLatest(driftBoost) ?? 1) as number;
+        const boost = driftBoostRef.current ?? 1;
         p.bx += p.vx * boost * 0.8;
         p.by += p.vy * boost * 0.8;
 
@@ -174,7 +181,7 @@ export default function ParticleOrbit({
       // connective lines
       const maxDist = 140;
       ctx.lineWidth = 1;
-      const alphaBase = (getLatest(lineAlpha) ?? 0.5) as number;
+      const alphaBase = lineAlphaRef.current ?? 0.5;
       for (let i = 0; i < ps.length; i++) {
         for (let j = i + 1; j < ps.length; j++) {
           const dx = ps[i].x - ps[j].x;
@@ -194,11 +201,6 @@ export default function ParticleOrbit({
       rafRef.current = requestAnimationFrame(tick);
     };
 
-    const getLatest = <T,>(v: any): T => {
-      // Small helper because MotionValue could be a number or function
-      return typeof v === "function" ? v() : (v as T);
-    };
-
     resize();
     tick();
 
@@ -212,7 +214,7 @@ export default function ParticleOrbit({
       canvas.removeEventListener("mousemove", onMouseMove);
       canvas.removeEventListener("mouseleave", onMouseLeave);
     };
-  }, [size, particles, driftBoost, lineAlpha]);
+  }, [size, particles]);
 
   // Wrapper: if size is provided, use fixed square; otherwise fluid
   const style: React.CSSProperties = size

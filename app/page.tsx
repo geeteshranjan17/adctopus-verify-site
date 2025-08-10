@@ -1,53 +1,54 @@
 // app/page.tsx
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
-import ParticleFlow from "./components/ParticleOrbit";
-import { PRODUCT_BRAND_NAME } from "@/lib/constants";
+import Image from 'next/image';
+import FancyParticles from '@/app/components/FancyParticles';
 
-export default function HomePage() {
+export default function Page() {
   return (
-    <div className="relative min-h-[85vh] overflow-hidden">
-      <ParticleFlow />
+    <div className="min-h-[120vh]">
+      {/* Hero: particles as background, clean logo, centered text */}
+      <section className="relative flex items-center justify-center pt-16 pb-24 overflow-hidden">
+        {/* Particles */}
+        <FancyParticles />
 
-      <section className="relative flex min-h-[85vh] items-center justify-center text-center px-6">
-        <div>
-          <motion.h1
-            className="text-4xl md:text-6xl font-bold tracking-tight text-white"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            {PRODUCT_BRAND_NAME}
-          </motion.h1>
+        {/* subtle vignette to add depth while keeping white page */}
+        <div className="pointer-events-none absolute inset-0"
+             style={{
+               background:
+                 'radial-gradient(80% 50% at 50% 20%, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0) 60%)'
+             }}
+        />
 
-          <motion.p
-            className="mt-4 text-lg md:text-xl text-slate-300"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15, duration: 0.5, ease: "easeOut" }}
-          >
+        <div className="relative z-10 container text-center">
+          <div className="mx-auto mb-6 flex items-center justify-center">
+            {/* logo only, no gray box */}
+            <Image
+              src="/logo.png"
+              alt="Logo"
+              width={64}
+              height={64}
+              priority
+              className="h-16 w-16 object-contain"
+            />
+          </div>
+
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[#0B1220]">
             Coming Soon
-          </motion.p>
+          </h1>
+
+          <p className="mt-3 text-slate-600">
+            We’re polishing the details so your ad comments go from chaos to calm.
+          </p>
         </div>
       </section>
 
-      {/* Scroll section with subtle parallax */}
-      <section className="relative px-6 py-24 md:py-32">
-        <motion.div
-          className="mx-auto max-w-3xl text-center"
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          <h2 className="text-2xl md:text-3xl font-semibold text-white">
-            Automating on-brand replies to ad comments
-          </h2>
-          <p className="mt-4 text-slate-300">
-            Stay tuned—we’re polishing the details so your ad comments go from chaos to calm.
-          </p>
-        </motion.div>
+      {/* Small info section so the page isn’t empty */}
+      <section className="container pb-16">
+        <div className="mx-auto max-w-2xl text-center text-sm text-slate-600">
+          Need anything in the meantime? Visit <a className="underline" href="/contact">Contact</a>,
+          or review our <a className="underline" href="/privacy">Privacy</a> and <a className="underline" href="/terms">Terms</a>.
+        </div>
       </section>
     </div>
   );
