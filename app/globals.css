@@ -1,9 +1,89 @@
+/* Tailwind layers */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: light; }
-body { @apply bg-white text-ink antialiased; }
-.container { @apply max-w-3xl mx-auto px-4; }
-.prose h1, .prose h2, .prose h3 { @apply font-semibold text-ink; }
-a { @apply underline-offset-2; }
+/* ---- Base resets & dark theme defaults ---- */
+@layer base {
+  :root {
+    color-scheme: dark;
+    --bg: #0b1220; /* matches layout */
+    --fg: 255 255 255; /* white in rgb for utilities */
+  }
+
+  html, body {
+    height: 100%;
+  }
+
+  body {
+    background: var(--bg);
+    color: rgb(var(--fg) / 0.95);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Selection */
+  ::selection {
+    background: rgba(56, 255, 195, 0.35);
+    color: #08111d;
+  }
+
+  /* Links (kept subtle; components can override) */
+  a {
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: color 150ms ease, opacity 150ms ease;
+  }
+  a:hover {
+    opacity: 0.9;
+  }
+
+  /* Images are block-level by default to avoid inline gaps */
+  img,
+  svg,
+  video,
+  canvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Forms (neutralize autofill glare on dark bg) */
+  input:-webkit-autofill,
+  textarea:-webkit-autofill,
+  select:-webkit-autofill {
+    -webkit-text-fill-color: #fff;
+    -webkit-box-shadow: 0 0 0px 1000px rgba(255,255,255,0.03) inset;
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  /* Respect reduced motion; our canvas also checks this */
+  @media (prefers-reduced-motion: reduce) {
+    *:not([data-allow-motion]) {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ---- Small, reusable component tweaks (optional) ---- */
+@layer components {
+  /* Card surface used in a few places */
+  .surface {
+    @apply rounded-2xl border border-white/10 bg-white/5 backdrop-blur;
+  }
+
+  /* Focus ring helper for keyboard nav */
+  .focus-ring {
+    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60;
+  }
+}
+
+/* ---- Utilities you might reuse later (lightweight) ---- */
+@layer utilities {
+  .text-faded { color: rgb(var(--fg) / 0.7); }
+  .text-dim { color: rgb(var(--fg) / 0.85); }
+}

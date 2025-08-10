@@ -1,54 +1,65 @@
+// app/privacy/page.tsx
 import {
   PRODUCT_BRAND_NAME,
   COMPANY_LEGAL_NAME,
   SUPPORT_EMAIL,
   BUSINESS_ADDRESS,
-  COUNTRY_JURISDICTION
+  COUNTRY_JURISDICTION,
 } from "@/lib/constants";
 
+export const metadata = {
+  title: "Privacy Policy — Adctopus",
+  description: "Our commitment to your privacy and how we handle data.",
+};
+export const viewport = { themeColor: "#0B1220" };
+
+const BRAND =
+  typeof PRODUCT_BRAND_NAME === "string"
+    ? PRODUCT_BRAND_NAME.charAt(0).toUpperCase() + PRODUCT_BRAND_NAME.slice(1)
+    : String(PRODUCT_BRAND_NAME ?? "");
+const COMPANY_NAME_TEXT =
+  typeof COMPANY_LEGAL_NAME === "string" ? COMPANY_LEGAL_NAME : String(COMPANY_LEGAL_NAME ?? "");
+const SUPPORT_EMAIL_TEXT =
+  typeof SUPPORT_EMAIL === "string" ? SUPPORT_EMAIL : String(SUPPORT_EMAIL ?? "");
+const JURIS_TEXT =
+  typeof COUNTRY_JURISDICTION === "string" ? COUNTRY_JURISDICTION : String(COUNTRY_JURISDICTION ?? "");
+const ADDRESS_TEXT =
+  typeof BUSINESS_ADDRESS === "string"
+    ? BUSINESS_ADDRESS
+    : BUSINESS_ADDRESS && typeof BUSINESS_ADDRESS === "object"
+    ? [
+        (BUSINESS_ADDRESS as any).line1,
+        (BUSINESS_ADDRESS as any).line2,
+        (BUSINESS_ADDRESS as any).city,
+        (BUSINESS_ADDRESS as any).state,
+        (BUSINESS_ADDRESS as any).postalCode,
+      ].filter(Boolean).join(", ")
+    : String(BUSINESS_ADDRESS ?? "");
+
 export default function PrivacyPage() {
+  const lastUpdated = new Date().toISOString().slice(0, 10);
+
   return (
-    <article className="prose max-w-none">
-      <h1>Privacy Policy</h1>
-      <p>Last updated: {new Date().toISOString().slice(0, 10)}</p>
-      <p>
-        This Privacy Policy describes how {COMPANY_LEGAL_NAME} (“we”, “us”, or “our”)
-        collects, uses, and discloses information in connection with {PRODUCT_BRAND_NAME}.
-        This policy is intended as general information and does not constitute legal advice.
-      </p>
-      <h2>Information We Collect</h2>
-      <ul>
-        <li>Account and contact details you provide (e.g., name, email).</li>
-        <li>Usage information related to accessing our site.</li>
-        <li>Communications you send to us (e.g., support requests).</li>
-      </ul>
-      <h2>How We Use Information</h2>
-      <ul>
-        <li>To provide, maintain, and improve our services and site.</li>
-        <li>To communicate with you, including support and updates.</li>
-        <li>To comply with legal obligations and enforce our terms.</li>
-      </ul>
-      <h2>Sharing of Information</h2>
-      <p>
-        We may share information with service providers who assist us; with authorities when required by law; or in connection with a business transaction. We do not sell your personal information.
-      </p>
-      <h2>Data Retention</h2>
-      <p>
-        We retain information for as long as reasonably necessary for the purposes described in this policy, unless a longer retention period is required by law.
-      </p>
-      <h2>Your Choices</h2>
-      <p>
-        You may contact us to access, update, or request deletion of your information using the details below.
-      </p>
-      <h2>International Use</h2>
-      <p>
-        Our processing may occur in {COUNTRY_JURISDICTION} or other locations. By using our site, you acknowledge such processing.
-      </p>
-      <h2>Contact Us</h2>
-      <p>
-        Email: <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a><br />
-        Address: {BUSINESS_ADDRESS}
-      </p>
+    <article className="mx-auto max-w-3xl px-4 py-14">
+      <header className="mb-6">
+        <h1 className="mb-2 text-3xl font-semibold tracking-tight">Privacy Policy</h1>
+        <p className="text-sm text-white/70">Last updated: {lastUpdated}</p>
+      </header>
+
+      <section className="space-y-4 text-white/90">
+        <p>
+          This Privacy Policy explains how {COMPANY_NAME_TEXT} (“we”, “us”, “our”) collects,
+          uses, and shares information in connection with {BRAND}. This page is for general
+          information and is not legal advice.
+        </p>
+
+        <h2 className="pt-6 text-xl font-semibold text-white">Contact Us</h2>
+        <p>
+          Email: <a className="underline" href={`mailto:${SUPPORT_EMAIL_TEXT}`}>{SUPPORT_EMAIL_TEXT}</a><br />
+          Address: {ADDRESS_TEXT}, {JURIS_TEXT}<br />
+          Or use our <a className="underline" href="/contact">Contact page</a>.
+        </p>
+      </section>
     </article>
   );
 }

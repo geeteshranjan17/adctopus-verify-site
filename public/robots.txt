@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: DOMAIN/sitemap.xml
+Sitemap: https://www.adctopus.com/sitemap.xml

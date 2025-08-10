@@ -1,0 +1,14 @@
+{
+    // Keep CSS validation, but ignore the specific Tailwind at-rule warning
+    "css.lint.unknownAtRules": "ignore",
+  
+    // Make Tailwind suggestions work nicely
+    "editor.quickSuggestions": { "strings": true },
+    "tailwindCSS.emmetCompletions": true,
+  
+    // Associate your globals with Tailwind language mode for better intellisense
+    "files.associations": {
+      "app/globals.css": "tailwindcss"
+    }
+  }
+  
