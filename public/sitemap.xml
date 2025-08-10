@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>DOMAIN/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+    <lastmod>2025-08-10</lastmod>
+  </url>
+  <url>
+    <loc>DOMAIN/privacy</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <lastmod>2025-08-10</lastmod>
+  </url>
+  <url>
+    <loc>DOMAIN/terms</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+    <lastmod>2025-08-10</lastmod>
+  </url>
+  <url>
+    <loc>DOMAIN/data-deletion</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+    <lastmod>2025-08-10</lastmod>
+  </url>
+  <url>
+    <loc>DOMAIN/contact</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <lastmod>2025-08-10</lastmod>
+  </url>
+</urlset>

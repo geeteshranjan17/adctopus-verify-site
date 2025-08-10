@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; }
+body { @apply bg-white text-ink antialiased; }
+.container { @apply max-w-3xl mx-auto px-4; }
+.prose h1, .prose h2, .prose h3 { @apply font-semibold text-ink; }
+a { @apply underline-offset-2; }
